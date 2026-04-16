@@ -15,12 +15,18 @@ enum TaskStatus {
 }
 
 model Community {
-  id        String   @id @default(cuid())
-  name      String
-  slug      String   @unique
-  tasks     Task[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  ownerHash   String
+  eventDate   DateTime @db.Date
+  description String?
+  tasks       Task[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([ownerHash, eventDate])
+  @@index([ownerHash, name])
 }
 
 model Task {

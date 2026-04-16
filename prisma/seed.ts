@@ -1,5 +1,7 @@
 import { PrismaClient, TaskStatus } from "@prisma/client";
 
+import { createOwnerHash } from "@/lib/community";
+
 function getDatabaseName(databaseUrl: string | undefined) {
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is required before seeding.");
@@ -39,6 +41,9 @@ async function main() {
     data: {
       name: "Maple Street Neighbourhood",
       slug: "maple-street",
+      ownerHash: createOwnerHash("maple.street@example.com"),
+      eventDate: new Date("2027-06-01T00:00:00.000Z"),
+      description: "En enkel eksempeldugnad som fortsatt driver startsiden lokalt.",
       tasks: {
         create: [
           {
