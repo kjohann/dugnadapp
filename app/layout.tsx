@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dugnadapp",
-  description: "A community work manager starter built with Next.js and Prisma.",
+  description: "En enkel start på Dugnadapp med Next.js og Prisma.",
 };
 
 export default function RootLayout({
@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="no"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full bg-slate-950 text-slate-50 flex flex-col">

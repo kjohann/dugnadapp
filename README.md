@@ -29,10 +29,22 @@ This repository includes `mise.toml`, so the safest way to run commands without 
 3. Bootstrap an isolated worktree environment:
 
    ```powershell
-   npm run agent:init -- --seed
-   ```
+    npm run agent:init -- --seed
+    ```
 
-   This creates a worktree-local `.env`, an isolated application database, an isolated Prisma shadow database, and applies the committed migrations.
+    This creates a worktree-local `.env`, an isolated application database, an isolated Prisma shadow database, and applies the committed migrations.
+
+    If you want to exercise Google sign-in in that worktree, add these values to the generated `.env` after bootstrap:
+
+    ```powershell
+    AUTH_SECRET="..."
+    AUTH_GOOGLE_ID="..."
+    AUTH_GOOGLE_SECRET="..."
+    ```
+
+    - Generate `AUTH_SECRET` with `npm exec auth secret` from the worktree if you do not already have one.
+    - `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` come from your Google OAuth application.
+    - Re-running `npm run agent:init` preserves existing `AUTH_*` values in the generated worktree-local `.env`.
 
 4. Start the app for this worktree:
 
@@ -90,6 +102,25 @@ Notes:
 - The issue-number-only handoff requires a client that can read GitHub issues from an issue number or URL. If the client cannot fetch the issue body, provide the full issue body or switch to a GitHub-aware client rather than adding extra unstated scope.
 - The workflow intentionally uses instructions, custom agents, prompt files, and issue templates. It does not require custom skills or extensions.
 
+## Google sign-in local setup
+
+The first auth slice uses Auth.js with Google and a worktree-local `.env`.
+
+1. Run `npm run agent:init -- --seed`.
+2. Open the generated `.env` in the worktree root.
+3. Set:
+
+   ```powershell
+   AUTH_SECRET="..."
+   AUTH_GOOGLE_ID="..."
+   AUTH_GOOGLE_SECRET="..."
+   ```
+
+4. Start the app with `npm run agent:dev`.
+5. Use the home page button to start Google sign-in, which redirects successful logins to `/profile`.
+
+If the auth variables are missing, the home page stays usable but shows a clear setup warning instead of a broken sign-in flow.
+
 ## Database workflow
 
 Use the Prisma scripts only after the worktree has been bootstrapped with `npm run agent:init`.
@@ -126,7 +157,7 @@ npm run db:down
 
 ## Environment
 
-`npm run agent:init` is the preferred way to create `.env`. If you need to recreate it manually, use `.env.example` as the template and make sure `DATABASE_URL` and `SHADOW_DATABASE_URL` point to different databases.
+`npm run agent:init` is the preferred way to create `.env`. If you need to recreate it manually, use `npm run agent:info` to inspect the generated database and port values, make sure `DATABASE_URL` and `SHADOW_DATABASE_URL` point to different databases, and then add any required `AUTH_*` values for that worktree.
 
 ## Next iteration ideas
 
