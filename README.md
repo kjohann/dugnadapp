@@ -42,9 +42,18 @@ This repository includes `mise.toml`, so the safest way to run commands without 
     AUTH_GOOGLE_SECRET="..."
     ```
 
-    - Generate `AUTH_SECRET` with `npm exec auth secret` from the worktree if you do not already have one.
-    - `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` come from your Google OAuth application.
-    - Re-running `npm run agent:init` preserves existing `AUTH_*` values in the generated worktree-local `.env`.
+     - Generate `AUTH_SECRET` with `npm exec auth secret` from the worktree if you do not already have one.
+     - `AUTH_GOOGLE_ID` and `AUTH_GOOGLE_SECRET` come from your Google OAuth application.
+     - Re-running `npm run agent:init` preserves existing `AUTH_*` values in the generated worktree-local `.env`.
+     - For local-only testing without Google, you can instead add:
+
+     ```powershell
+     AUTH_TEST_LOGIN_SECRET="set-a-random-local-secret"
+     AUTH_TEST_LOGIN_EMAIL="test-organizer@example.com"   # optional override
+     AUTH_TEST_LOGIN_NAME="Testarrangør"                  # optional override
+     ```
+
+     When `AUTH_TEST_LOGIN_SECRET` is present and the app is not running in production, the home page shows a dev-only test login button that signs in a fixed test organizer.
 
 4. Start the app for this worktree:
 
