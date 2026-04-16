@@ -49,3 +49,6 @@ The App's UI should be in Norwegian, but use english in code. Update the list be
 - The issue-number-only workflow assumes the current client can resolve a GitHub issue number or URL into the issue body. In local CLI sessions, use `gh issue view` before concluding that GitHub access is unavailable. If the issue still cannot be fetched, stop and request the issue body or switch to a GitHub-aware client instead of accepting off-template scope.
 - If the issue is not implementation-ready, refine the issue first instead of guessing at missing scope.
 - Local coding sessions should use the worktree bootstrap flow from `README.md`: `npm run agent:init -- --seed` before database work and `npm run agent:dev` when an app process is needed.
+- The implementation agent should prefer TDD when practical: add or update failing tests first, or reproduce the acceptance criteria with the Playwright MCP server before changing code.
+- Before creating or updating a PR, the implementation branch must be rebased onto the latest `main`, and the final verification must happen after that rebase.
+- Final verification should run all relevant existing tests and, at minimum, `npm run lint` and `npm run build`. When no automated coverage exists for a critical UI flow, use the Playwright MCP server to verify it explicitly and note the gap.

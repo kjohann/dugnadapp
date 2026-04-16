@@ -92,7 +92,7 @@ Suggested flow:
 3. Review the issue and its required `Rubberduck review` section.
 4. In a new coding session, use `/implement-issue` or the `issue-implementer` agent with the issue number or URL.
 5. If local code changes are needed, bootstrap the worktree with `npm run agent:init -- --seed` and start the app with `npm run agent:dev`.
-6. The implementation session should read the issue first, code to the acceptance criteria, and finish with its own rubberduck review.
+6. The implementation session should read the issue first, prefer TDD against the acceptance criteria, use Playwright-driven verification for UI flows when needed, rebase onto `main` before opening or updating the draft PR, and finish with its own rubberduck review.
 
 Notes:
 

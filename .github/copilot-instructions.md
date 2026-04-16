@@ -26,6 +26,9 @@
 - Both the PRD stage and the implementation stage require a rubberduck review before finishing. Use the experimental rubberduck feature when available; otherwise produce an explicit `## Rubberduck review` section.
 - When a user asks to implement an issue by number, read the issue first, restate the acceptance criteria, and stop to refine the issue if the handoff is incomplete.
 - In local CLI sessions, use `gh issue view` before concluding that the referenced issue cannot be read. If the issue still cannot be fetched, stop and ask for the issue body or require a GitHub-aware client. Do not replace the issue handoff with informal extra scope.
+- The implementation workflow should prefer TDD when practical, leaning on the Playwright MCP server for browser-driven reproduction and verification of acceptance criteria.
+- Before an implementation agent creates or updates a PR, it should rebase onto the latest `main` and rerun validation after that rebase.
+- Validation for implementation work should include all relevant existing tests and, at minimum, `npm run lint` and `npm run build`.
 
 # Agent-specific files
 
