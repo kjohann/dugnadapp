@@ -6,6 +6,14 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 # Dugnadapp agent workflow
 
+## App UI language
+The App's UI should be in Norwegian, but use english in code. Update the list below as needed with domain terms.
+
+### Domain terms
+
+- Dugnad: Community work effort: what this entire app is about.
+- Oppgave: Task
+
 ## Shared contract
 
 - The canonical workflow is: PRD authoring -> GitHub issue handoff -> implementation by issue number -> rubberduck review -> completion.
