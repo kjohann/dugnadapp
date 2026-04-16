@@ -18,6 +18,7 @@ const nextCommand = path.join(
   ".bin",
   process.platform === "win32" ? "next.cmd" : "next",
 );
+const authPreservedPrefix = "AUTH_";
 
 function runCapture(command: string, args: string[]) {
   return execFileSync(command, args, {
@@ -82,6 +83,10 @@ function parseEnvFile(filePath: string) {
   return Object.fromEntries(entries);
 }
 
+function formatEnvValue(value: string) {
+  return JSON.stringify(value);
+}
+
 function getAdminUrl() {
   return process.env.DATABASE_ADMIN_URL ?? "postgresql://postgres:postgres@localhost:5432/postgres";
 }
@@ -118,23 +123,51 @@ function resolveAgentConfig() {
   };
 }
 
-function buildEnvContent(config: ReturnType<typeof resolveAgentConfig>) {
+function buildEnvContent(
+  config: ReturnType<typeof resolveAgentConfig>,
+  preservedAuthEntries: ReadonlyArray<readonly [string, string]> = [],
+) {
   const databaseUrl = buildDatabaseUrl(config.adminUrl, config.databaseName);
   const shadowDatabaseUrl = buildDatabaseUrl(config.adminUrl, config.shadowDatabaseName);
-
-  return [
+  const content = [
     generatedHeader,
     `# Worktree: ${config.worktreeName}`,
     `# Branch: ${config.branch}`,
-    `AGENT_ID="${config.agentId}"`,
-    `DATABASE_ADMIN_URL="${config.adminUrl}"`,
-    `DATABASE_URL="${databaseUrl}"`,
-    `SHADOW_DATABASE_URL="${shadowDatabaseUrl}"`,
-    `PORT="${config.port}"`,
-    `AGENT_DB_NAME="${config.databaseName}"`,
-    `AGENT_SHADOW_DB_NAME="${config.shadowDatabaseName}"`,
-    "",
-  ].join("\n");
+    `AGENT_ID=${formatEnvValue(config.agentId)}`,
+    `DATABASE_ADMIN_URL=${formatEnvValue(config.adminUrl)}`,
+    `DATABASE_URL=${formatEnvValue(databaseUrl)}`,
+    `SHADOW_DATABASE_URL=${formatEnvValue(shadowDatabaseUrl)}`,
+    `PORT=${formatEnvValue(String(config.port))}`,
+    `AGENT_DB_NAME=${formatEnvValue(config.databaseName)}`,
+    `AGENT_SHADOW_DB_NAME=${formatEnvValue(config.shadowDatabaseName)}`,
+  ];
+
+  if (preservedAuthEntries.length > 0) {
+    content.push("", "# Preserved custom auth configuration");
+    for (const [key, value] of preservedAuthEntries) {
+      content.push(`${key}=${formatEnvValue(value)}`);
+    }
+  }
+
+  content.push("");
+
+  return content.join("\n");
+}
+
+function getPreservedAuthEntries(envPath: string) {
+  if (!existsSync(envPath)) {
+    return [];
+  }
+
+  const current = readFileSync(envPath, "utf8");
+
+  if (!current.startsWith(generatedHeader)) {
+    return [];
+  }
+
+  return Object.entries(parseEnvFile(envPath))
+    .filter(([key]) => key.startsWith(authPreservedPrefix))
+    .sort(([left], [right]) => left.localeCompare(right));
 }
 
 function writeEnvFile(config: ReturnType<typeof resolveAgentConfig>, force: boolean) {
@@ -148,7 +181,7 @@ function writeEnvFile(config: ReturnType<typeof resolveAgentConfig>, force: bool
     }
   }
 
-  writeFileSync(config.envPath, buildEnvContent(config), "utf8");
+  writeFileSync(config.envPath, buildEnvContent(config, getPreservedAuthEntries(config.envPath)), "utf8");
 }
 
 function dockerComposeArgs(args: string[]) {
@@ -277,6 +310,8 @@ async function init(flags: Set<string>) {
   } else {
     runPrisma(["db", "push", "--skip-generate"]);
   }
+
+  runPrisma(["generate"]);
 
   if (flags.has("--seed")) {
     runPrisma(["db", "seed"]);
