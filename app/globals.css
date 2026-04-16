@@ -1,16 +1,58 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-background: #020617;
-  --color-foreground: #f8fafc;
-  --font-sans: var(--font-geist-sans);
+  /* Surfaces */
+  --color-background: #fafaf5;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f0f0e8;
+
+  /* Text */
+  --color-foreground: #1c2b1e;
+  --color-foreground-muted: #4d5f4e;
+
+  /* Primary (sage green) — WCAG AA: white on primary 4.86:1 */
+  --color-primary: #557a5c;
+  --color-primary-foreground: #ffffff;
+  --color-primary-hover: #436049;
+
+  /* Accent (warm rose — fill only, not for text on light surfaces) */
+  --color-accent: #e8c5c5;
+  --color-accent-foreground: #6b2b2b;
+
+  /* Warning (env/setup notices — separate from task status) */
+  --color-warning-bg: #fef3c7;
+  --color-warning-fg: #78350f;
+  --color-warning-border: #92400e;
+
+  /* Status: TODO — amber tones */
+  --color-status-todo-bg: #fef3c7;
+  --color-status-todo-fg: #78350f;
+  --color-status-todo-border: #92400e;
+
+  /* Status: IN_PROGRESS — soft blue */
+  --color-status-inprogress-bg: #dbeafe;
+  --color-status-inprogress-fg: #1e3a5f;
+  --color-status-inprogress-border: #1d4ed8;
+
+  /* Status: DONE — soft green */
+  --color-status-done-bg: #d1fae5;
+  --color-status-done-fg: #065f46;
+  --color-status-done-border: #047857;
+
+  /* Borders */
+  --color-border: #c8c8b8;
+  --color-border-muted: #e2e2d6;
+
+  /* Focus ring — 4.64:1 on background, 4.86:1 on surface */
+  --color-ring: #557a5c;
+
+  /* Fonts */
+  --font-sans: var(--font-source-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 body {
-  background:
-    radial-gradient(circle at top, rgba(14, 165, 233, 0.2), transparent 35%),
-    linear-gradient(180deg, #020617 0%, #111827 100%);
+  background: var(--color-background);
   color: var(--color-foreground);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
