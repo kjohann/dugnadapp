@@ -23,25 +23,25 @@ This repository includes `mise.toml`, so the safest way to run commands without 
 2. Start Postgres:
 
    ```powershell
-   mise exec node@22 -- npm run db:up
+   npm run db:up
    ```
 
 3. Run the first migration:
 
    ```powershell
-   mise exec node@22 -- npm run db:migrate -- --name init
+   npm run db:migrate -- --name init
    ```
 
 4. Seed the starter community and tasks:
 
    ```powershell
-   mise exec node@22 -- npm run db:seed
+   npm run db:seed
    ```
 
 5. Start the app:
 
    ```powershell
-   mise exec node@22 -- npm run dev
+   npm run dev
    ```
 
 Then open [http://localhost:3000](http://localhost:3000).
@@ -49,11 +49,11 @@ Then open [http://localhost:3000](http://localhost:3000).
 ## Useful commands
 
 ```powershell
-mise exec node@22 -- npm run lint
-mise exec node@22 -- npm run build
-mise exec node@22 -- npm run db:logs
-mise exec node@22 -- npm run db:studio
-mise exec node@22 -- npm run db:down
+npm run lint
+npm run build
+npm run db:logs
+npm run db:studio
+npm run db:down
 ```
 
 ## Environment
