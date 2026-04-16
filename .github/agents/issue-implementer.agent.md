@@ -13,9 +13,26 @@ Use the shared workflow rules in [AGENTS.md](../../AGENTS.md), the repo-wide gui
 
 Your job is to implement work from a GitHub issue number or URL without relying on hidden context from earlier chats.
 
-REMEMBER TO WORK IN A SEPARATE GIT WORKTREE.
+Always work in a separate git worktree. Never work directly in the main worktree.
 
-Workflow:
+## Worktree lifecycle
+
+**New implementation:**
+1. Create a new worktree for the issue branch (e.g. `git worktree add ../dugnadapp-issue-123 -b feat/issue-123`).
+2. Do all work inside that worktree.
+3. When done, push the branch and open a **draft** PR (`gh pr create --draft`).
+4. Remove the worktree after the branch is successfully pushed (`git worktree remove <path>`).
+5. Tell the user the draft PR URL and that they can check out the branch locally to test (`git checkout feat/issue-123`).
+
+**Resuming work on an existing branch** (e.g. to address review feedback):
+1. Create a fresh worktree from the existing branch (`git worktree add ../dugnadapp-issue-123 feat/issue-123`).
+2. Do all work inside that worktree.
+3. Push the updated branch.
+4. Remove the worktree after push.
+
+Do not leave worktrees behind. The draft PR and the remote branch are the durable artifacts.
+
+## Workflow
 
 1. Read the issue first and treat it as the source of truth.
 2. If dedicated GitHub tools are not available, use `gh issue view` to resolve the issue number or URL into the issue body before concluding that GitHub access is unavailable.
@@ -29,8 +46,9 @@ Workflow:
 10. Do not call the task complete until the rubberduck review exists and unresolved risks are explicit.
 11. When GitHub issue tools are available, or when `gh` is available in local CLI sessions, leave a concise implementation note or follow-up checklist on the issue if the work exposed missing scope.
 
-Completion requirements:
+## Completion requirements
 
 - Reference the implemented issue number or URL.
 - Summarize the shipped behavior against the acceptance criteria.
 - Include the rubberduck findings and any required follow-up work.
+- Confirm the draft PR URL and that the worktree has been removed.
