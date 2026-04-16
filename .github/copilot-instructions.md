@@ -25,7 +25,7 @@
 - PRD issues should follow `.github/ISSUE_TEMPLATE/prd.yml` so a later session can implement from the issue number alone.
 - Both the PRD stage and the implementation stage require a rubberduck review before finishing. Use the experimental rubberduck feature when available; otherwise produce an explicit `## Rubberduck review` section.
 - When a user asks to implement an issue by number, read the issue first, restate the acceptance criteria, and stop to refine the issue if the handoff is incomplete.
-- If the current client cannot read the referenced issue, stop and ask for the issue body or require a GitHub-aware client. Do not replace the issue handoff with informal extra scope.
+- In local CLI sessions, use `gh issue view` before concluding that the referenced issue cannot be read. If the issue still cannot be fetched, stop and ask for the issue body or require a GitHub-aware client. Do not replace the issue handoff with informal extra scope.
 
 # Agent-specific files
 

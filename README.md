@@ -76,7 +76,7 @@ This repository now includes repo-local Copilot workflow scaffolding for a two-s
 Suggested flow:
 
 1. Open a planning chat and use `/create-prd` or the `prd-author` agent.
-2. Ask it to draft or update a GitHub issue from the PRD form.
+2. Ask it to draft or update a GitHub issue from the PRD form, and expect it to say up front whether it will create a new issue or update an existing one.
 3. Review the issue and its required `Rubberduck review` section.
 4. In a new coding session, use `/implement-issue` or the `issue-implementer` agent with the issue number or URL.
 5. If local code changes are needed, bootstrap the worktree with `npm run agent:init -- --seed` and start the app with `npm run agent:dev`.
@@ -86,6 +86,7 @@ Notes:
 
 - This setup is repository-local and does not depend on personal Copilot configuration.
 - The shared instructions work across clients that support repository instructions. The named agents and prompt aliases are primarily for IDE clients that support custom agents and prompt files.
+- In local CLI sessions, GitHub issue access should default to authenticated `gh` usage when dedicated GitHub tools are not exposed.
 - The issue-number-only handoff requires a client that can read GitHub issues from an issue number or URL. If the client cannot fetch the issue body, provide the full issue body or switch to a GitHub-aware client rather than adding extra unstated scope.
 - The workflow intentionally uses instructions, custom agents, prompt files, and issue templates. It does not require custom skills or extensions.
 

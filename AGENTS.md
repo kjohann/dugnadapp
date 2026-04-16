@@ -26,7 +26,9 @@ The App's UI should be in Norwegian, but use english in code. Update the list be
 - PRDs should be created from `.github/ISSUE_TEMPLATE/prd.yml`.
 - Every PRD issue must include: summary, problem, goals, non-goals, target users, user stories, UX and behavior, acceptance criteria, data or backend impact, rollout and observability notes, dependencies, open questions, and a rubberduck review section.
 - If any area is unknown, record it explicitly as an open question instead of leaving a gap.
-- The PRD author should create or update the GitHub issue directly when the current Copilot client exposes GitHub issue tools. If direct issue editing is unavailable, the fallback is to produce the final issue title and body in the same structure as the template.
+- The PRD author should create or update the GitHub issue directly as the default outcome. In local CLI sessions, treat authenticated `gh` access as sufficient GitHub access even when dedicated GitHub tools are not exposed.
+- The PRD author should make the intended GitHub action explicit before any approval checkpoint: say whether it plans to create a new issue or update an existing one, and say that it will do so with GitHub tools or `gh`.
+- Only fall back to a ready-to-paste title and body after verifying that GitHub issue tools are unavailable and `gh` is unavailable or unauthenticated.
 
 ## Rubberduck review contract
 
@@ -44,6 +46,6 @@ The App's UI should be in Norwegian, but use english in code. Update the list be
 ## Implementation handoff rules
 
 - The implementation agent starts by reading the referenced issue and restating the acceptance criteria before coding.
-- The issue-number-only workflow assumes the current client can resolve a GitHub issue number or URL into the issue body. If it cannot, stop and request the issue body or switch to a GitHub-aware client instead of accepting off-template scope.
+- The issue-number-only workflow assumes the current client can resolve a GitHub issue number or URL into the issue body. In local CLI sessions, use `gh issue view` before concluding that GitHub access is unavailable. If the issue still cannot be fetched, stop and request the issue body or switch to a GitHub-aware client instead of accepting off-template scope.
 - If the issue is not implementation-ready, refine the issue first instead of guessing at missing scope.
 - Local coding sessions should use the worktree bootstrap flow from `README.md`: `npm run agent:init -- --seed` before database work and `npm run agent:dev` when an app process is needed.
