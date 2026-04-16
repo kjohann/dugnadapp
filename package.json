@@ -7,12 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "db:up": "docker compose up -d db",
-    "db:down": "docker compose down",
-    "db:logs": "docker compose logs -f db",
-    "db:migrate": "prisma migrate dev",
-    "db:seed": "prisma db seed",
-    "db:studio": "prisma studio"
+    "db:up": "docker compose -p dugnadapp-shared up -d db",
+    "db:down": "docker compose -p dugnadapp-shared down",
+    "db:logs": "docker compose -p dugnadapp-shared logs -f db",
+    "db:migrate": "tsx scripts/agent-prisma.ts migrate-dev",
+    "db:migrate:deploy": "tsx scripts/agent-prisma.ts migrate-deploy",
+    "db:seed": "tsx scripts/agent-prisma.ts seed",
+    "db:studio": "tsx scripts/agent-prisma.ts studio",
+    "agent:init": "tsx scripts/agent-worktree.ts init",
+    "agent:destroy": "tsx scripts/agent-worktree.ts destroy",
+    "agent:dev": "tsx scripts/agent-worktree.ts dev",
+    "agent:info": "tsx scripts/agent-worktree.ts info"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -26,10 +31,12 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
+    "@types/pg": "^8.20.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.4",
+    "pg": "^8.20.0",
     "prisma": "^6.17.1",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
