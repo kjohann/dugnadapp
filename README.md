@@ -63,6 +63,32 @@ npm run agent:init -- --seed
 npm run agent:dev
 ```
 
+## PRD to issue to implementation workflow
+
+This repository now includes repo-local Copilot workflow scaffolding for a two-session handoff:
+
+- shared agent rules in `AGENTS.md`
+- repository-wide Copilot instructions in `.github/copilot-instructions.md`
+- named custom agents in `.github/agents/prd-author.agent.md` and `.github/agents/issue-implementer.agent.md`
+- prompt aliases in `.github/prompts/create-prd.prompt.md` and `.github/prompts/implement-issue.prompt.md`
+- an implementation-ready PRD issue form in `.github/ISSUE_TEMPLATE/prd.yml`
+
+Suggested flow:
+
+1. Open a planning chat and use `/create-prd` or the `prd-author` agent.
+2. Ask it to draft or update a GitHub issue from the PRD form.
+3. Review the issue and its required `Rubberduck review` section.
+4. In a new coding session, use `/implement-issue` or the `issue-implementer` agent with the issue number or URL.
+5. If local code changes are needed, bootstrap the worktree with `npm run agent:init -- --seed` and start the app with `npm run agent:dev`.
+6. The implementation session should read the issue first, code to the acceptance criteria, and finish with its own rubberduck review.
+
+Notes:
+
+- This setup is repository-local and does not depend on personal Copilot configuration.
+- The shared instructions work across clients that support repository instructions. The named agents and prompt aliases are primarily for IDE clients that support custom agents and prompt files.
+- The issue-number-only handoff requires a client that can read GitHub issues from an issue number or URL. If the client cannot fetch the issue body, provide the full issue body or switch to a GitHub-aware client rather than adding extra unstated scope.
+- The workflow intentionally uses instructions, custom agents, prompt files, and issue templates. It does not require custom skills or extensions.
+
 ## Database workflow
 
 Use the Prisma scripts only after the worktree has been bootstrapped with `npm run agent:init`.

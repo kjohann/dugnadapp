@@ -1,0 +1,135 @@
+name: Product requirements document
+description: Capture an implementation-ready PRD issue for a future coding session.
+title: "[PRD] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form when the output of one session needs to be implemented in a later session by issue number alone.
+
+        The goal is that a fresh agent can read this issue, understand the scope, and implement it without relying on hidden chat context.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: A concise overview of the requested outcome.
+      placeholder: Describe the change in a short paragraph.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user or business problem does this work solve?
+      placeholder: Describe the current pain point or gap.
+    validations:
+      required: true
+  - type: textarea
+    id: goals
+    attributes:
+      label: Goals
+      description: List the intended outcomes of the change.
+      placeholder: |
+        - Goal 1
+        - Goal 2
+    validations:
+      required: true
+  - type: textarea
+    id: non-goals
+    attributes:
+      label: Non-goals
+      description: List decisions or scope that are intentionally out of bounds.
+      placeholder: |
+        - Not in scope
+        - Deferred work
+    validations:
+      required: true
+  - type: textarea
+    id: target-users
+    attributes:
+      label: Target users and actors
+      description: Who is affected by this change?
+      placeholder: Describe the user roles or stakeholders.
+    validations:
+      required: true
+  - type: textarea
+    id: user-stories
+    attributes:
+      label: User stories
+      description: Capture the desired behavior from the user's perspective.
+      placeholder: |
+        - As a ..., I want ..., so that ...
+    validations:
+      required: true
+  - type: textarea
+    id: ux-behavior
+    attributes:
+      label: UX and behavior details
+      description: Describe the intended UI, state transitions, validation, and edge-case behavior.
+      placeholder: Describe the expected behavior in enough detail for implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: Define the conditions of satisfaction for the implementation session.
+      placeholder: |
+        - [ ] Criterion 1
+        - [ ] Criterion 2
+    validations:
+      required: true
+  - type: textarea
+    id: data-impact
+    attributes:
+      label: Data, API, and backend impact
+      description: Note any schema, API, authorization, migration, or background-job implications.
+      placeholder: Note "None" if there is no expected backend impact.
+    validations:
+      required: true
+  - type: textarea
+    id: rollout-ops
+    attributes:
+      label: Rollout, observability, and operational notes
+      description: Describe rollout concerns, telemetry, support impact, or monitoring needs.
+      placeholder: Note "None" if there are no special rollout or operational concerns.
+    validations:
+      required: true
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and sequencing
+      description: List blockers, follow-up issues, or sequencing constraints.
+      placeholder: Note "None" if this work is self-contained.
+    validations:
+      required: true
+  - type: textarea
+    id: open-questions
+    attributes:
+      label: Open questions
+      description: Record unresolved questions explicitly instead of hiding ambiguity.
+      placeholder: Note "None" if there are no open questions.
+    validations:
+      required: true
+  - type: textarea
+    id: rubberduck-review
+    attributes:
+      label: Rubberduck review
+      description: Required self-review from the PRD author. Challenge ambiguity, contradictions, hidden dependencies, testability gaps, and rollout risks.
+      placeholder: |
+        - Assumptions challenged:
+        - Missing or conflicting requirements:
+        - Highest-risk failure modes:
+        - Changes made after review:
+        - Remaining risks or open questions:
+    validations:
+      required: true
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Readiness checklist
+      options:
+        - label: This issue is implementation-ready for a later session that only receives the issue number or URL.
+          required: true
+        - label: The rubberduck review has been completed and reflected in the issue body.
+          required: true
