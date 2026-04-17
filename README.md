@@ -121,6 +121,31 @@ The first auth slice uses Auth.js with Google and a worktree-local `.env`.
 
 If the auth variables are missing, the home page stays usable but shows a clear setup warning instead of a broken sign-in flow.
 
+## Playwright test auth
+
+Issue `#11` adds a non-production fake-auth path for local and agent worktrees so browser tests can cover protected flows without Google OAuth.
+
+1. Run `npm run agent:init -- --seed` in the worktree if you have not already done so.
+2. Open the generated worktree-local `.env`.
+3. Add:
+
+   ```powershell
+   AUTH_SECRET="generated-with-npm-exec-auth-secret"
+   AUTH_ENABLE_TEST_MODE="true"
+   AUTH_TEST_MODE_SECRET="choose-a-local-secret"
+   ```
+
+4. Start the app with `npm run agent:dev`, or let Playwright start it for you.
+5. Run the example test with `npm run test:e2e`.
+
+The example test in `e2e/auth.spec.ts` prepares `test@example.com` by POSTing to `/api/test-auth/prepare`, clicks the visible `Logg inn / registrer deg` button on `/`, and verifies that the browser lands on `/profile` with the chosen email in the authenticated session.
+
+Notes:
+
+- Test auth is disabled unless `AUTH_SECRET`, `AUTH_ENABLE_TEST_MODE="true"`, and `AUTH_TEST_MODE_SECRET` are all present in the worktree-local `.env`.
+- The helper endpoint is rejected in production and when the secret is missing or incorrect.
+- The first slice is session-only: it does not create Prisma users or require schema changes.
+
 ## Database workflow
 
 Use the Prisma scripts only after the worktree has been bootstrapped with `npm run agent:init`.
