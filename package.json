@@ -7,6 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
     "db:up": "docker compose -p dugnadapp-shared up -d db",
     "db:down": "docker compose -p dugnadapp-shared down",
     "db:logs": "docker compose -p dugnadapp-shared logs -f db",

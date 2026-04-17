@@ -1,17 +1,27 @@
-import { signInWithGoogle } from "@/app/actions/auth";
-import { auth } from "@/auth";
-import { getAuthSetupHint, hasRequiredAuthEnv } from "@/lib/auth-env";
+import { signInFromHomePage } from "@/app/actions/auth";
 import JoinByCode from "@/app/components/JoinByCode";
+import { auth } from "@/auth";
+import { getAuthSetupHint, hasConfiguredAuthProvider } from "@/lib/auth-env";
+import { getTestAuthErrorMessage } from "@/lib/test-auth";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
-export default async function Home() {
+type HomePageProps = {
+  searchParams: Promise<{
+    authError?: string | string[] | undefined;
+  }>;
+};
+
+export default async function Home({ searchParams }: HomePageProps) {
   const session = await auth();
+  const query = await searchParams;
 
   const isSignedIn = Boolean(session?.user?.email);
-  const authConfigured = hasRequiredAuthEnv();
+  const authConfigured = hasConfiguredAuthProvider();
   const authSetupHint = getAuthSetupHint();
+  const authError = Array.isArray(query.authError) ? query.authError[0] : query.authError;
+  const authErrorMessage = getTestAuthErrorMessage(authError);
 
   return (
     <main className="mx-auto flex min-h-screen w-full max-w-2xl flex-col gap-8 px-6 py-16 sm:px-10">
@@ -31,6 +41,11 @@ export default async function Home() {
         <p className="mt-2 text-sm text-foreground-muted">
           Logg inn for å opprette og administrere Dugnader.
         </p>
+        {authErrorMessage ? (
+          <div className="mt-4 rounded-2xl border border-warning-border bg-warning-bg px-4 py-3 text-sm text-warning-fg">
+            {authErrorMessage}
+          </div>
+        ) : null}
         <div className="mt-5 flex flex-wrap items-center gap-3">
           {isSignedIn ? (
             <>
@@ -43,7 +58,7 @@ export default async function Home() {
               <p className="text-sm text-foreground-muted">{session?.user?.email}</p>
             </>
           ) : authConfigured ? (
-            <form action={signInWithGoogle}>
+            <form action={signInFromHomePage}>
               <button
                 type="submit"
                 className="inline-flex items-center justify-center rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground transition hover:bg-primary-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
